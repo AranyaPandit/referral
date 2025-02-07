@@ -57,19 +57,10 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'referred_by' => $referredBy ? $referredBy->id : null,
         ]);
 
-        return response()->json(['message' => 'User registered successfully'], 201);
+        return redirect()->route('user.investments');
     }
-
-
-    public function investments()
-{
-    $investments = Investment::with('referralEarnings.referredUser')
-        ->where('user_id', auth()->id())->get();
-    
-    return view('user.investments', compact('investments'));
-}
-
 
 }

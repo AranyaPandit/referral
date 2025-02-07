@@ -19,11 +19,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-Route::post('/invest', [InvestmentController::class, 'invest'])->middleware('auth:sanctum');
-Route::post('/admin/settings/update', [AdminController::class, 'updateSettings'])->middleware('auth:admin');
-
-
 Route::get('/admin/settings', [AdminController::class, 'settings'])->name('admin.settings');
 Route::post('/admin/settings/update', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
 Route::get('/admin/investments', [AdminController::class, 'investments'])->name('admin.investments');
@@ -36,3 +31,13 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/invest', [InvestmentController::class, 'showInvestForm'])->name('invest.form');
+    Route::post('/invest', [InvestmentController::class, 'invest'])->name('invest');
+    Route::get('/my-investments', [InvestmentController::class, 'myInvestments'])->name('user.investments');
+});
+
